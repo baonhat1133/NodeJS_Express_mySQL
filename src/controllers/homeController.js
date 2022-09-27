@@ -1,5 +1,6 @@
 // import connection from "../configs/connectDB";
 import pool from "../configs/connectDB";
+import multer from "multer";
 let getHomepage = async (req, res) => {
   const [rows, fields] = await pool.execute("SELECT * FROM `users`");
   //   console.log("text:<<<<<<<", await pool.execute("SELECT * FROM `users`"));
@@ -46,6 +47,59 @@ let updateUser = async (req, res) => {
   );
   return res.redirect("/");
 };
+let uploadFile = (req, res) => {
+  return res.render("uploadFile.ejs");
+};
+const upload = multer().single("mySingle");
+
+let uploadSingle = (req, res) => {
+  upload(req, res, function (err) {
+    if (req.fileValidationError) {
+      return res.send(req.fileValidationError);
+    } else if (!req.file) {
+      return res.send("Please select an image to upload");
+    } else if (err instanceof multer.MulterError) {
+      return res.send(err);
+    } else if (err) {
+      return res.send(err);
+    }
+  });
+  return res.send(
+    `upload success this image: <hr/><img src="/fileUpload/${req.file.filename}" width="300px" height="300px" alt="okela" /><br/> <a href="/upload-file">UPLOAD FILE ANOTHERS</a>`
+  );
+};
+
+const uploadMul = multer().array("multiple_images");
+var htmls = "";
+
+let uploadMultiple = (req, res) => {
+  let htmls = "";
+  if (req.files !== []) {
+    htmls = req.files.map((file) => {
+      return `<img src="/fileUpload/${file.filename}" width="300" />`;
+    });
+  }
+  uploadMul(req, res, function (err) {
+    if (req.fileValidationError) {
+      return res.send(req.fileValidationError);
+    }
+    let result = "You have uploaded these images: <hr />";
+    const files = req.files;
+    let index, len;
+
+    // Loop through all the uploaded images and display them on frontend
+    for (index = 0, len = files.length; index < len; ++index) {
+      result += `<img src="${files[index].path}" width="300px" height="300px" style="margin-right: 20px;">`;
+    }
+    result += '<hr/><a href="./">Upload more images</a>';
+  });
+  console.log(htmls.join(""));
+  return res.send(
+    `upload success this image: <hr/> ${htmls.join(
+      ""
+    )} <br/><a href="/upload-file">UPLOAD FILE ANOTHERS</a>`
+  );
+};
 export {
   getHomepage,
   getDetailPage,
@@ -53,4 +107,7 @@ export {
   deleteCurrentUser,
   editUser,
   updateUser,
+  uploadSingle,
+  uploadMultiple,
+  uploadFile,
 };

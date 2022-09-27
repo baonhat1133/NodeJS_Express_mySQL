@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NODEJS CƠ BẢN</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  </head>
+  <body>
+    <div class="topnav">
+      <a href="/">Home</a>
+      <a href="/upload-file" class="active">Upload File</a>
+    </div>
+    <div class="both-form">
+      <div class="upload-file-container">
+        <form
+          method="POST"
+          action="/upload-single"
+          enctype="multipart/form-data"
+        >
+          <div class="title-head">UPLOAD SINGLE FILE</div>
+          <div>
+            <label style="display: block">Chọn File Upload:</label>
+            <input type="file" name="mySingle" />
+          </div>
+          <div>
+            <button type="submit">Save file</button>
+          </div>
+        </form>
+      </div>
+      <div class="upload-file-container">
+        <form
+          method="POST"
+          action="/upload-multiple"
+          enctype="multipart/form-data"
+        >
+          <div class="title-head">UPLOAD MULTIPLE FILE</div>
+          <div>
+            <label>Chọn nhiều Files Upload:</label>
+            <input type="file" name="multiple_images" multiple />
+          </div>
+          <div>
+            <button type="submit">Save file</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
